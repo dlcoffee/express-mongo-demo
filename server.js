@@ -6,6 +6,11 @@ app.listen(8080, function() {
 });
 
 
+// GETs
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
+});
+
+// POSTs
+app.post('/quotes', (req, res) => {
 });
