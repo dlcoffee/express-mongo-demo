@@ -1,5 +1,12 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+
+// middleware
+app.use(bodyParser.urlencoded({
+  extended: true,
+}));
+
 
 app.listen(8080, function() {
   console.log('listening on 8080');
@@ -13,4 +20,5 @@ app.get('/', (req, res) => {
 
 // POSTs
 app.post('/quotes', (req, res) => {
+  console.log(req.body);
 });
