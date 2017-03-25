@@ -12,6 +12,9 @@ app.use(bodyParser.urlencoded({
   extended: true,
 }));
 
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
 
 // mongoDB setup
 var db;
@@ -56,4 +59,28 @@ app.post('/quotes', (req, res) => {
       console.log('saved to the database');
       res.redirect('/');
     });
+});
+
+//PUTS
+app.put('/quotes', (req, res) => {
+  var query = { name: 'Gandalf' };
+  var update = {
+    $set: {
+      name: req.body.name,
+      quote: req.body.quote,
+    },
+  };
+  var options = {
+    _id: -1,
+    upsert: true,
+  }; // search starting from newest entry
+  var callback = (err, result) => {
+    if (err) {
+      return res.send(err);
+    }
+    res.send(result);
+  };
+
+  db.collection('quotes')
+    .findOneAndUpdate(query, update, options, callback);
 });
