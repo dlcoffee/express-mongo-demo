@@ -61,7 +61,7 @@ app.post('/quotes', (req, res) => {
     });
 });
 
-//PUTS
+//PUTs
 app.put('/quotes', (req, res) => {
   var query = { name: 'Gandalf' };
   var update = {
@@ -83,4 +83,19 @@ app.put('/quotes', (req, res) => {
 
   db.collection('quotes')
     .findOneAndUpdate(query, update, options, callback);
+});
+
+// DELETEs
+app.delete('/quotes', (req, res) => {
+  var query = { name: req.body.name };
+  var options = {};
+  var callback = (err, result) => {
+    if (err) {
+      return res.send(500, err);
+    }
+    res.send('A Saudron quote got deleted');
+  };
+
+  db.collection('quotes')
+    .findOneAndDelete(query, options, callback);
 });
