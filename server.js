@@ -4,10 +4,14 @@ const dotenv = require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
 const app = express();
 
+// set templating engine
+app.set('view engine', 'ejs');
+
 // middleware
 app.use(bodyParser.urlencoded({
   extended: true,
 }));
+
 
 // mongoDB setup
 var db;
@@ -30,11 +34,14 @@ MongoClient.connect(
 
 // GETs
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
   var cursor = db.collection('quotes')
     .find()
-    .toArray((err, results) => {
-      console.log(results);
+    .toArray((err, result) => {
+      if (err) {
+        return console.log(err)
+      }
+
+      res.render('index.ejs', { quotes: result });
     });
 });
 
